@@ -1,0 +1,76 @@
+package p8;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import java.util.List;
+
+/**
+ * This program uses Selenium WebDriver to find and count all the links on a webpage.
+ * It navigates to a URL, identifies all anchor (<a>) tags, prints their visible text,
+ * and then displays the total number of links found.
+ */
+public class FindAllLinks {
+
+    // IMPORTANT: Update this path to the location of geckodriver.exe on your system.
+    static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+
+    public static void main(String[] args) {
+        // Set the system property for the GeckoDriver.
+        System.setProperty("webdriver.gecko.driver", driverPath);
+
+        // NOTE THAT: The following commented lines are for older versions of Selenium
+        // and are generally not required for modern setups. They are kept for consistency
+        // with the provided practical guide.
+        // DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        // capabilities.setCapability("marionette", true);
+        // ProfilesIni allProfiles = new ProfilesIni();
+        // FirefoxProfile fp = new FirefoxProfile();
+        // fp.setPreference(FirefoxProfile.PORT_PREFERENCE, "7055");
+        // FirefoxOptions options = new FirefoxOptions();
+        // options.setProfile(fp);
+
+        WebDriver driver = null;
+        try {
+            // Initialize the Firefox driver.
+            driver = new FirefoxDriver();
+
+            // The URL to test.
+            String appUrl = "https://www.google.co.in/";
+
+            // Launch the browser and navigate to the URL.
+            driver.get(appUrl);
+
+            // Find all elements with the tag name "a", which corresponds to hyperlinks.
+            List<WebElement> links = driver.findElements(By.tagName("a"));
+
+            System.out.println("--- Links found on the page ---");
+
+            // Iterate through the list of links and print the visible text of each one.
+            for (int i = 0; i < links.size(); i++) {
+                String linkText = links.get(i).getText();
+                // Print only the links that have visible text.
+                if (linkText != null && !linkText.isEmpty()) {
+                    System.out.println(linkText);
+                }
+            }
+
+            // Print the total number of links found on the page.
+            System.out.println("---------------------------------");
+            System.out.println("Total No. of Links: " + links.size());
+
+        } catch (Exception e) {
+            System.err.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the browser is closed even if an error occurs.
+            if (driver != null) {
+                driver.quit();
+            }
+        }
+    }
+}
