@@ -1,0 +1,90 @@
+package p9;
+
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.ui.Select;
+
+/**
+ * This program demonstrates how to interact with a dropdown (select) element
+ * using Selenium WebDriver. It counts the number of options in the dropdown
+ * and prints each one to the console.
+ */
+public class ComboBox {
+
+    // IMPORTANT: Update this path to the location of geckodriver.exe on your system.
+    static String driverPath = "C:\\Users\\Usman\\503\\geckodriver.exe";
+
+    public static void main(String[] args) {
+        // Set the system property for the GeckoDriver.
+        System.setProperty("webdriver.gecko.driver", driverPath);
+
+        // NOTE THAT: The following commented lines are for older versions of Selenium
+        // and are generally not required for modern setups.
+        // DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        // capabilities.setCapability("marionette", true);
+        // ProfilesIni allProfiles = new ProfilesIni();
+        // FirefoxProfile fp = new FirefoxProfile();
+        // fp.setPreference(FirefoxProfile.PORT_PREFERENCE, "7055");
+        // FirefoxOptions options = new FirefoxOptions();
+        // options.setProfile(fp);
+
+        WebDriver driver = null;
+        try {
+            // Initialize the Firefox driver.
+            driver = new FirefoxDriver();
+
+            // The URL of the practice form to test.
+            String appUrl = "https://www.toolsqa.com/automation-practice-form/";
+
+            // You can also test with a local HTML file by uncommenting the line below
+            // and commenting out the one above.
+            // String appUrl = "file:///D:/Usman/College/503%20pracs/combobox.html";
+
+            // Launch the browser and navigate to the URL.
+            driver.get(appUrl);
+            driver.manage().window().maximize();
+
+            // Create a Select object to interact with the dropdown.
+            // The dropdown is identified by its ID "continents".
+            Select oSelect = new Select(driver.findElement(By.id("continents")));
+
+            // Get all the options from the dropdown into a list.
+            List<WebElement> oSize = oSelect.getOptions();
+            int iListSize = oSize.size();
+
+            System.out.println("--- Options in the Dropdown ---");
+
+            // Loop through all the options and print their visible text.
+            for (int i = 0; i < iListSize; i++) {
+                String sValue = oSelect.getOptions().get(i).getText();
+                System.out.println(sValue);
+            }
+
+            // Print the total number of items found in the dropdown.
+            System.out.println("-------------------------------");
+            System.out.println("Total No. Items in Dropdown: " + iListSize);
+
+        } catch (Exception e) {
+            System.err.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the browser is closed even if an error occurs.
+            if (driver != null) {
+                // Add a small delay to observe the result before closing.
+                try {
+                    Thread.sleep(3000); // Wait for 3 seconds
+                } catch (InterruptedException e) {
+                    // Restore the interrupted status
+                    Thread.currentThread().interrupt();
+                }
+                driver.quit();
+            }
+        }
+    }
+}
