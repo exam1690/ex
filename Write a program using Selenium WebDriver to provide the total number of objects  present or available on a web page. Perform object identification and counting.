@@ -1,0 +1,51 @@
+package practical4;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+
+public class FacebookLogin {
+
+    public static void main(String[] args) {
+
+        FirefoxProfile fp = new FirefoxProfile();
+        fp.setPreference(FirefoxProfile.PORT_PREFERENCE, "7055");
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(fp);
+
+        WebDriver driver = new FirefoxDriver(options);
+        String appUrl = "https://www.facebook.com/";
+
+        driver.get(appUrl);
+        driver.manage().window().maximize();
+
+        String expectedTitle = "Facebook – log in or sign up";
+        String actualTitle = driver.getTitle();
+
+        if (expectedTitle.equals(actualTitle)) {
+            System.out.println("Verification Successful - The correct title is displayed on the web page.");
+        } else {
+            System.out.println("Verification Failed - An incorrect title is displayed on the web page.");
+        }
+
+        WebElement username = driver.findElement(By.id("email"));
+        username.clear();
+        username.sendKeys("your email id");
+
+        WebElement password = driver.findElement(By.id("pass"));
+        password.clear();
+        password.sendKeys("your password");
+        password.sendKeys(Keys.ENTER);
+
+        WebElement logInButton = driver.findElement(By.id("u_0_2"));
+        logInButton.click();
+
+        driver.close();
+        System.out.println("Test script executed successfully.");
+        System.exit(0);
+    }
+}
