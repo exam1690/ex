@@ -1,4 +1,4 @@
-package practical4;
+package practical9;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
