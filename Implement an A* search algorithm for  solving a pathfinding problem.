@@ -1,0 +1,31 @@
+from queue import PriorityQueue
+
+graph = {
+    'S': [('A', 1), ('G', 10)],
+    'A': [('C', 1), ('B', 2)],
+    'B': [('D', 5)],
+    'C': [('D', 3), ('G', 4)],
+    'D': [('G', 2)],
+    'G': []
+}
+
+h = {'S': 5, 'A': 3, 'B': 4, 'C': 2, 'D': 6, 'G': 0}
+
+def astar(start, goal):
+    q = PriorityQueue()
+    q.put((h[start], 0, start, [start]))
+
+    while not q.empty():
+        f, g, node, path = q.get()
+        if node == goal:
+            return path, g
+
+        for neigh, cost in graph[node]:
+            q.put((g + cost + h[neigh], g + cost, neigh, path + [neigh]))
+
+    return None, float('inf')
+
+path, cost = astar('S', 'G')
+print("Path:", path)
+print("Total cost:", cost)
+
